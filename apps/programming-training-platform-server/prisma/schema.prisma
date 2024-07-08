@@ -1,0 +1,60 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Task {
+  id          String          @id @default(cuid())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  title       String?
+  status      EnumTaskStatus?
+  description String?
+  courseId    Int?
+  dueDate     DateTime?
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String?
+  description String?
+  duration    Int?
+  author      String?
+}
+
+model Progress {
+  id                  String    @id @default(cuid())
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  userId              Int?
+  courseId            Int?
+  completedPercentage Float?
+  lastUpdated         DateTime?
+}
+
+model User {
+  id        String        @id @default(cuid())
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  firstName String?
+  lastName  String?
+  username  String        @unique
+  email     String?       @unique
+  password  String
+  roles     Json
+  role      EnumUserRole?
+}
+
+enum EnumTaskStatus {
+  Option1
+}
+
+enum EnumUserRole {
+  Option1
+}
